@@ -1,0 +1,1058 @@
+<link rel="stylesheet" href="skybook-global.css">
+<script defer src="skybook-global.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyBook - My Bookings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              navy: '#0B192C',
+              navyLight: '#11223A',
+              gold: '#C5A880',
+              goldHover: '#B2946A',
+              goldDark: '#855D29',
+              goldLight: '#FBF7F0',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F8F9FA;
+      color: #1A202C;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .badge-confirmed {
+      background-color: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+    }
+    .badge-past {
+      background-color: #F1F5F9;
+      color: #475569;
+      border: 1px solid #CBD5E1;
+    }
+    .badge-cancelled {
+      background-color: #FEF2F2;
+      color: #991B1B;
+      border: 1px solid #FECACA;
+    }
+    /* custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#F8F9FA] text-[#0B192C] antialiased selection:bg-[#C5A880]/30 selection:text-[#0B192C]">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Left: Logo & Nav Links -->
+      <div class="flex items-center gap-10">
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-lg bg-[#0B192C] flex items-center justify-center text-[#C5A880] shadow-sm">
+            <svg class="w-6 h-6 transform group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xl font-bold tracking-tight text-[#0B192C] leading-none">SkyBook</span>
+            <span class="text-[10px] uppercase tracking-[0.2em] text-[#855D29] font-semibold mt-1">Luxury Airways</span>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+          <a href="#" class="text-slate-600 hover:text-[#0B192C] transition-colors">Flights</a>
+          <a href="#" class="text-slate-600 hover:text-[#0B192C] transition-colors">Available Flights</a>
+          <a href="#" class="text-[#0B192C] font-semibold flex items-center gap-1.5 border-b-2 border-[#0B192C] pb-1 pt-1">
+            <span>My Bookings</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-[#C5A880]"></span>
+          </a>
+          <a href="#" class="text-slate-600 hover:text-[#0B192C] transition-colors">About</a>
+        </nav>
+      </div>
+
+      <!-- Right: User Menu & Currency -->
+      <div class="flex items-center gap-4">
+        <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+          <span class="material-symbols-outlined text-sm text-[#855D29]">payments</span>
+          <span>USD ($)</span>
+          <span class="text-slate-300">|</span>
+          <span>EN</span>
+        </div>
+
+        <!-- User Profile Dropdown -->
+        <div class="flex items-center gap-3 pl-2 sm:border-l sm:border-slate-200">
+          <div class="relative flex items-center gap-3 cursor-pointer group p-1.5 rounded-full hover:bg-slate-50 transition">
+            <div class="w-10 h-10 rounded-full bg-[#0B192C] text-[#C5A880] flex items-center justify-center font-bold text-sm border-2 border-[#C5A880]/30 shadow-sm">
+              JM
+            </div>
+            <div class="hidden lg:block text-left">
+              <div class="text-xs font-bold text-[#0B192C] leading-tight">John Mohamed</div>
+              <div class="text-[10px] text-[#855D29] font-semibold uppercase tracking-wider flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">verified</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-slate-400 text-lg group-hover:text-[#0B192C] transition-colors">expand_more</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-slate-200">
+      <div>
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#FBF7F0] border border-[#C5A880]/40 text-[#855D29] text-xs font-semibold uppercase tracking-wider mb-3">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#855D29]"></span>
+          Passenger Travel Desk
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#0B192C] tracking-tight">My Bookings</h1>
+        <p class="text-slate-500 mt-1.5 text-base">Manage your upcoming and previous journeys, seat assignments, and e-tickets.</p>
+      </div>
+
+      <!-- Quick Action: New Flight -->
+      <a href="HOME.html" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#0B192C] text-white text-sm font-semibold hover:bg-[#11223A] transition shadow-sm hover:shadow">
+        <span class="material-symbols-outlined text-lg text-[#C5A880]">add</span>
+        <span>Book New Flight</span>
+      </a>
+    </div>
+
+    <!-- FILTER TABS & SEARCH BAR -->
+    <div class="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <!-- Status Tabs -->
+      <div class="inline-flex p-1 bg-white rounded-xl border border-slate-200 shadow-sm">
+        <button onclick="setTab('upcoming')" id="tab-upcoming" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all bg-[#0B192C] text-white shadow-sm flex items-center gap-2">
+          <span>Upcoming</span>
+          <span id="badge-count-upcoming" class="px-2 py-0.5 text-xs rounded-full bg-white/20 text-white font-bold">2</span>
+        </button>
+        <button onclick="setTab('past')" id="tab-past" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-[#0B192C] flex items-center gap-2">
+          <span>Past</span>
+          <span id="badge-count-past" class="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-bold">1</span>
+        </button>
+        <button onclick="setTab('cancelled')" id="tab-cancelled" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-[#0B192C] flex items-center gap-2">
+          <span>Cancelled</span>
+          <span id="badge-count-cancelled" class="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-bold">0</span>
+        </button>
+      </div>
+
+      <!-- Search Field -->
+      <div class="relative w-full md:w-80">
+        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+          <span class="material-symbols-outlined text-lg">search</span>
+        </span>
+        <input 
+          type="text" 
+          id="search-input" 
+          oninput="handleSearch()"
+          placeholder="Search by booking reference or flight number" 
+          class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B192C] focus:border-transparent transition shadow-sm"
+        >
+        <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- BOOKINGS LIST CONTAINER -->
+    <div id="bookings-container" class="mt-8 space-y-6">
+      <!-- Dynamic booking cards inserted by JS -->
+    </div>
+
+    <!-- EMPTY STATE PLACEHOLDER (managed by JS) -->
+    <div id="empty-state" class="hidden mt-12 bg-white rounded-2xl border border-slate-200 p-12 text-center max-w-xl mx-auto shadow-sm">
+      <div class="w-16 h-16 rounded-full bg-[#FBF7F0] text-[#855D29] flex items-center justify-center mx-auto mb-4 border border-[#C5A880]/30">
+        <span class="material-symbols-outlined text-3xl">flight_takeoff</span>
+      </div>
+      <h3 id="empty-state-title" class="text-xl font-bold text-[#0B192C]">No upcoming journeys</h3>
+      <p id="empty-state-subtitle" class="text-slate-500 mt-2 text-sm leading-relaxed">Your next adventure starts here. Explore our world-class scheduled flights across continents.</p>
+      <div class="mt-6">
+        <a href="HOME.html" id="empty-state-btn" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#0B192C] text-white text-sm font-semibold hover:bg-[#11223A] transition shadow">
+          <span>Search Flights</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- CANCEL CONFIRMATION MODAL -->
+  <div id="cancel-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-[#0B192C]/60 backdrop-blur-sm transition-opacity duration-300">
+    <div class="relative bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-transform duration-300 scale-95" id="cancel-modal-card">
+      
+      <!-- Warning Icon -->
+      <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mb-4 border border-red-100">
+        <span class="material-symbols-outlined text-2xl">warning</span>
+      </div>
+
+      <h3 class="text-xl font-bold text-[#0B192C] tracking-tight">Cancel Booking?</h3>
+      <p class="text-slate-600 mt-2 text-sm leading-relaxed">
+        Are you sure you want to cancel booking <span id="modal-booking-ref" class="font-bold text-[#0B192C] px-1.5 py-0.5 bg-slate-100 rounded text-xs tracking-wider">SKY-8F42KQ</span>?
+      </p>
+
+      <!-- Warning Box -->
+      <div class="mt-4 p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs flex items-start gap-2.5 leading-relaxed">
+        <span class="material-symbols-outlined text-amber-600 text-base mt-0.5 flex-shrink-0">info</span>
+        <div>
+          <span class="font-semibold">Important Notice:</span> Cancellation may be subject to the applicable booking conditions, fare rules, and refund processing timelines.
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+        <button onclick="closeCancelModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-50 transition">
+          Keep Booking
+        </button>
+        <button onclick="confirmCancellation()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition shadow-sm hover:shadow flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-base">close</span>
+          <span>Cancel Booking</span>
+        </button>
+      </div>
+
+      <!-- Close top corner -->
+      <button onclick="closeCancelModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-[#0B192C] text-white px-5 py-3 rounded-xl shadow-xl border border-[#C5A880]/30 text-sm font-medium">
+    <span class="material-symbols-outlined text-[#C5A880]" id="toast-icon">check_circle</span>
+    <span id="toast-text">Action completed successfully</span>
+  </div>
+
+  <!-- LUXURY FOOTER -->
+  <footer class="mt-20 bg-[#0B192C] text-white border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        
+        <div class="md:col-span-1">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-[#C5A880]">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
+              </svg>
+            </div>
+            <div>
+              <span class="font-bold text-lg text-white">SkyBook</span>
+              <span class="block text-[10px] uppercase tracking-widest text-[#C5A880]">Luxury Airways</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mt-4 leading-relaxed">
+            Pioneering sovereign long-haul aviation with tailored suites, Michelin-grade gastronomy, and unmatched punctuality.
+          </p>
+          <div class="mt-4 flex items-center gap-2 text-[11px] text-[#C5A880] font-medium">
+            <span class="material-symbols-outlined text-sm">verified</span>
+            <span>IATA Accredited • Skytrax 5-Star</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4">Manage Travel</h4>
+          <ul class="space-y-2.5 text-xs text-slate-400">
+            <li><a href="#" class="hover:text-white transition">View E-Tickets</a></li>
+            <li><a href="#" class="hover:text-white transition">Online Check-in</a></li>
+            <li><a href="#" class="hover:text-white transition">Seat Selection & Upgrades</a></li>
+            <li><a href="#" class="hover:text-white transition">Baggage Guidelines</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4">Support & Concierge</h4>
+          <ul class="space-y-2.5 text-xs text-slate-400">
+            <li><a href="#" class="hover:text-white transition">24/7 Sovereign Desk</a></li>
+            <li><a href="#" class="hover:text-white transition">Flight Status Live</a></li>
+            <li><a href="#" class="hover:text-white transition">Refund & Fare Rules</a></li>
+            <li><a href="#" class="hover:text-white transition">Accessibility Assistance</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4">Sovereign Alliance</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Members of SkyClub enjoy priority boarding, complimentary lounge suite access, and high-speed Starlink Ka-band connectivity aloft.
+          </p>
+          <div class="mt-4 p-3 bg-white/5 rounded-lg border border-white/10 flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-200">SkyClub Concierge</span>
+            <span class="text-xs text-[#C5A880] font-bold">+1 (800) SKY-BOOK</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <div>© 2026 SkyBook Airways International. All rights reserved. Sovereign Fleet Standard.</div>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-slate-400 transition">Conditions of Carriage</a>
+          <a href="#" class="hover:text-slate-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-slate-400 transition">Security Protocol</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT: APPLICATION LOGIC & STATE MANAGEMENT -->
+  <script>
+    // Master Bookings Database (State)
+    let bookings = [
+      {
+        id: "SKY-8F42KQ",
+        status: "CONFIRMED", // CONFIRMED | PAST | CANCELLED
+        tripType: "ROUND TRIP",
+        bookingDate: "10 Sep 2026",
+        fareClass: "Economy Class",
+        totalPaid: 2560.00,
+        currency: "USD",
+        passengers: [
+          {
+            name: "John Mohamed",
+            type: "Adult (18+)",
+            nationality: "Egypt",
+            document: "Passport ••••••••8492",
+            seats: {
+              "SB 918": "14A",
+              "SB 928": "15A"
+            }
+          },
+          {
+            name: "Ahmed Ali",
+            type: "Adult (18+)",
+            nationality: "Egypt",
+            document: "Passport ••••••••3109",
+            seats: {
+              "SB 918": "14B",
+              "SB 928": "15B"
+            }
+          }
+        ],
+        segments: [
+          {
+            type: "Outbound",
+            fromCity: "Cairo",
+            fromCode: "CAI",
+            fromAirport: "Cairo International Airport",
+            fromTerminal: "Terminal 2",
+            toCity: "Dubai",
+            toCode: "DXB",
+            toAirport: "Dubai International Airport",
+            toTerminal: "Terminal 3",
+            date: "11 Sep 2026",
+            departureTime: "20:05",
+            arrivalTime: "01:45",
+            arrivalDayOffset: "+1",
+            duration: "3h 40m",
+            isNonStop: true,
+            flightNumber: "SB 918",
+            aircraft: "Boeing 787-9 Dreamliner",
+            cabin: "Economy"
+          },
+          {
+            type: "Return",
+            fromCity: "Dubai",
+            fromCode: "DXB",
+            fromAirport: "Dubai International Airport",
+            fromTerminal: "Terminal 3",
+            toCity: "Cairo",
+            toCode: "CAI",
+            toAirport: "Cairo International Airport",
+            toTerminal: "Terminal 2",
+            date: "18 Sep 2026",
+            departureTime: "09:15",
+            arrivalTime: "12:05",
+            arrivalDayOffset: "",
+            duration: "3h 35m",
+            isNonStop: true,
+            flightNumber: "SB 928",
+            aircraft: "Airbus A350-1000",
+            cabin: "Economy"
+          }
+        ],
+        priceBreakdown: {
+          baseFare: 2400.00,
+          taxesFees: 160.00,
+          seatSelection: "Included"
+        }
+      },
+      {
+        id: "SKY-9K21MT",
+        status: "CONFIRMED",
+        tripType: "ONE WAY",
+        bookingDate: "02 Oct 2026",
+        fareClass: "Business Class",
+        totalPaid: 2150.00,
+        currency: "USD",
+        passengers: [
+          {
+            name: "John Mohamed",
+            type: "Adult (18+)",
+            nationality: "Egypt",
+            document: "Passport ••••••••8492",
+            seats: {
+              "SB 501": "2A"
+            }
+          }
+        ],
+        segments: [
+          {
+            type: "Outbound",
+            fromCity: "Dubai",
+            fromCode: "DXB",
+            fromAirport: "Dubai International Airport",
+            fromTerminal: "Terminal 3",
+            toCity: "Tokyo",
+            toCode: "HND",
+            toAirport: "Tokyo Haneda Airport",
+            toTerminal: "Terminal 3",
+            date: "24 Oct 2026",
+            departureTime: "03:10",
+            arrivalTime: "17:40",
+            arrivalDayOffset: "",
+            duration: "9h 30m",
+            isNonStop: true,
+            flightNumber: "SB 501",
+            aircraft: "Boeing 777-300ER",
+            cabin: "Business Lie-Flat Suite"
+          }
+        ],
+        priceBreakdown: {
+          baseFare: 1980.00,
+          taxesFees: 170.00,
+          seatSelection: "Included"
+        }
+      },
+      {
+        id: "SKY-4X99TR",
+        status: "PAST",
+        tripType: "ROUND TRIP",
+        bookingDate: "14 May 2026",
+        fareClass: "Economy Class",
+        totalPaid: 1650.00,
+        currency: "USD",
+        passengers: [
+          {
+            name: "John Mohamed",
+            type: "Adult (18+)",
+            nationality: "Egypt",
+            document: "Passport ••••••••8492",
+            seats: {
+              "SB 301": "12F",
+              "SB 302": "12F"
+            }
+          }
+        ],
+        segments: [
+          {
+            type: "Outbound",
+            fromCity: "Cairo",
+            fromCode: "CAI",
+            fromAirport: "Cairo International Airport",
+            fromTerminal: "Terminal 2",
+            toCity: "London",
+            toCode: "LHR",
+            toAirport: "London Heathrow Airport",
+            toTerminal: "Terminal 5",
+            date: "20 Jun 2026",
+            departureTime: "08:30",
+            arrivalTime: "12:45",
+            arrivalDayOffset: "",
+            duration: "5h 15m",
+            isNonStop: true,
+            flightNumber: "SB 301",
+            aircraft: "Airbus A350-1000",
+            cabin: "Economy"
+          },
+          {
+            type: "Return",
+            fromCity: "London",
+            fromCode: "LHR",
+            fromAirport: "London Heathrow Airport",
+            toCity: "Cairo",
+            toCode: "CAI",
+            toAirport: "Cairo International Airport",
+            date: "28 Jun 2026",
+            departureTime: "14:15",
+            arrivalTime: "20:30",
+            arrivalDayOffset: "",
+            duration: "5h 15m",
+            isNonStop: true,
+            flightNumber: "SB 302",
+            aircraft: "Airbus A350-1000",
+            cabin: "Economy"
+          }
+        ],
+        priceBreakdown: {
+          baseFare: 1510.00,
+          taxesFees: 140.00,
+          seatSelection: "Included"
+        }
+      }
+    ];
+
+    // UI State
+    let currentTab = 'upcoming'; // 'upcoming' | 'past' | 'cancelled'
+    let searchQuery = '';
+    let expandedBookingId = null;
+    let pendingCancelBookingId = null;
+
+    // Initialize View
+    document.addEventListener('DOMContentLoaded', () => {
+      render();
+    });
+
+    function setTab(tab) {
+      currentTab = tab;
+      
+      // Update Tab button styles
+      ['upcoming', 'past', 'cancelled'].forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        if (t === tab) {
+          btn.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all bg-[#0B192C] text-white shadow-sm flex items-center gap-2";
+          const badge = btn.querySelector('span:last-child');
+          if (badge) {
+            badge.className = "px-2 py-0.5 text-xs rounded-full bg-white/20 text-white font-bold";
+          }
+        } else {
+          btn.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-[#0B192C] flex items-center gap-2";
+          const badge = btn.querySelector('span:last-child');
+          if (badge) {
+            badge.className = "px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-bold";
+          }
+        }
+      });
+
+      render();
+    }
+
+    function handleSearch() {
+      const input = document.getElementById('search-input');
+      searchQuery = input.value.trim().toLowerCase();
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (searchQuery.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+      render();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('search-input');
+      input.value = '';
+      searchQuery = '';
+      document.getElementById('clear-search-btn').classList.add('hidden');
+      render();
+    }
+
+    function toggleDetails(bookingId) {
+      if (expandedBookingId === bookingId) {
+        expandedBookingId = null;
+      } else {
+        expandedBookingId = bookingId;
+      }
+      render();
+
+      // Smooth scroll if expanding
+      if (expandedBookingId) {
+        setTimeout(() => {
+          const el = document.getElementById(`panel-details-${bookingId}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 50);
+      }
+    }
+
+    function openCancelModal(bookingId) {
+      pendingCancelBookingId = bookingId;
+      document.getElementById('modal-booking-ref').textContent = bookingId;
+      const modal = document.getElementById('cancel-modal');
+      const card = document.getElementById('cancel-modal-card');
+      
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        card.classList.remove('scale-95');
+        card.classList.add('scale-100');
+      }, 10);
+    }
+
+    function closeCancelModal() {
+      const modal = document.getElementById('cancel-modal');
+      const card = document.getElementById('cancel-modal-card');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        pendingCancelBookingId = null;
+      }, 200);
+    }
+
+    function confirmCancellation() {
+      if (!pendingCancelBookingId) return;
+
+      const booking = bookings.find(b => b.id === pendingCancelBookingId);
+      if (booking) {
+        booking.status = 'CANCELLED';
+        
+        // Show Toast
+        showToast(`Booking ${booking.id} cancelled. Moved to Cancelled tab.`);
+        
+        // Close modal
+        closeCancelModal();
+        
+        // Switch view to Cancelled tab to show the user the updated state
+        currentTab = 'cancelled';
+        setTab('cancelled');
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 4000);
+    }
+
+    function downloadDocument(type, bookingRef) {
+      showToast(`Generating ${type} for ${bookingRef}...`);
+    }
+
+    // Main Render Function
+    function render() {
+      // Update Tab Badges
+      const upcomingCount = bookings.filter(b => b.status === 'CONFIRMED').length;
+      const pastCount = bookings.filter(b => b.status === 'PAST').length;
+      const cancelledCount = bookings.filter(b => b.status === 'CANCELLED').length;
+
+      document.getElementById('badge-count-upcoming').textContent = upcomingCount;
+      document.getElementById('badge-count-past').textContent = pastCount;
+      document.getElementById('badge-count-cancelled').textContent = cancelledCount;
+
+      // Filter by current Tab
+      let filtered = bookings.filter(b => {
+        if (currentTab === 'upcoming') return b.status === 'CONFIRMED';
+        if (currentTab === 'past') return b.status === 'PAST';
+        if (currentTab === 'cancelled') return b.status === 'CANCELLED';
+        return true;
+      });
+
+      // Filter by Search Query
+      if (searchQuery) {
+        filtered = filtered.filter(b => {
+          const matchId = b.id.toLowerCase().includes(searchQuery);
+          const matchFlight = b.segments.some(s => s.flightNumber.toLowerCase().includes(searchQuery));
+          const matchCity = b.segments.some(s => s.fromCity.toLowerCase().includes(searchQuery) || s.toCity.toLowerCase().includes(searchQuery));
+          const matchPassenger = b.passengers.some(p => p.name.toLowerCase().includes(searchQuery));
+          return matchId || matchFlight || matchCity || matchPassenger;
+        });
+      }
+
+      const container = document.getElementById('bookings-container');
+      const emptyState = document.getElementById('empty-state');
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+
+        const title = document.getElementById('empty-state-title');
+        const subtitle = document.getElementById('empty-state-subtitle');
+        const btn = document.getElementById('empty-state-btn');
+
+        if (searchQuery) {
+          title.textContent = "No matching bookings found";
+          subtitle.textContent = `No bookings found matching "${searchQuery}". Please verify your reference number or flight code.`;
+          btn.parentElement.classList.add('hidden');
+        } else if (currentTab === 'upcoming') {
+          title.textContent = "No upcoming journeys";
+          subtitle.textContent = "Your next adventure starts here. Discover our scheduled flights and luxury cabins across continents.";
+          btn.parentElement.classList.remove('hidden');
+        } else if (currentTab === 'past') {
+          title.textContent = "No past bookings";
+          subtitle.textContent = "You have no completed journeys recorded in your sovereign flight manifest history.";
+          btn.parentElement.classList.add('hidden');
+        } else if (currentTab === 'cancelled') {
+          title.textContent = "No cancelled bookings";
+          subtitle.textContent = "You have no active cancellations on file.";
+          btn.parentElement.classList.add('hidden');
+        }
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      // Generate Cards HTML
+      container.innerHTML = filtered.map(b => createBookingCardHTML(b)).join('');
+    }
+
+    function createBookingCardHTML(b) {
+      const isExpanded = expandedBookingId === b.id;
+      const isCancelled = b.status === 'CANCELLED';
+      const isPast = b.status === 'PAST';
+
+      // Status Badge HTML
+      let badgeHtml = '';
+      if (b.status === 'CONFIRMED') {
+        badgeHtml = `
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold badge-confirmed">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>CONFIRMED ✓</span>
+          </span>
+        `;
+      } else if (b.status === 'PAST') {
+        badgeHtml = `
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold badge-past">
+            <span class="material-symbols-outlined text-sm">history</span>
+            <span>COMPLETED</span>
+          </span>
+        `;
+      } else {
+        badgeHtml = `
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold badge-cancelled">
+            <span class="material-symbols-outlined text-sm">cancel</span>
+            <span>CANCELLED</span>
+          </span>
+        `;
+      }
+
+      // Segments Summary HTML
+      const segmentsHtml = b.segments.map((seg, idx) => `
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 ${idx > 0 ? 'border-t border-slate-100' : ''}">
+          <!-- Route & Segment Type -->
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center text-[#0B192C] flex-shrink-0">
+              <span class="material-symbols-outlined text-xl ${seg.type === 'Return' ? 'rotate-180' : ''}">flight_takeoff</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#855D29] bg-[#FBF7F0] px-2 py-0.5 rounded border border-[#C5A880]/30">${seg.type}</span>
+                <span class="text-xs text-slate-400 font-medium">${seg.date}</span>
+              </div>
+              <div class="text-lg font-extrabold text-[#0B192C] tracking-tight mt-0.5">
+                ${seg.fromCity.toUpperCase()} (${seg.fromCode}) → ${seg.toCity.toUpperCase()} (${seg.toCode})
+              </div>
+              <div class="text-xs text-slate-500 mt-0.5 flex flex-wrap items-center gap-2">
+                <span class="font-semibold text-slate-700">Flight ${seg.flightNumber}</span>
+                <span>•</span>
+                <span>${seg.aircraft}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Time & Duration Timeline -->
+          <div class="flex items-center gap-6 self-start md:self-center pl-14 md:pl-0">
+            <div class="text-left">
+              <div class="text-base font-bold text-[#0B192C] tabular-nums">${seg.departureTime}</div>
+              <div class="text-xs text-slate-400">${seg.fromCode}</div>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <span class="text-[11px] font-semibold text-slate-500">${seg.duration}</span>
+              <div class="relative w-24 sm:w-28 flex items-center my-1">
+                <div class="w-1.5 h-1.5 rounded-full bg-[#0B192C]"></div>
+                <div class="flex-1 h-[2px] bg-slate-200"></div>
+                <span class="material-symbols-outlined text-xs text-[#855D29] -mx-1">flight</span>
+                <div class="flex-1 h-[2px] bg-slate-200"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-[#0B192C]"></div>
+              </div>
+              <span class="text-[10px] text-emerald-600 font-medium">Non-stop direct</span>
+            </div>
+
+            <div class="text-left">
+              <div class="text-base font-bold text-[#0B192C] tabular-nums">
+                ${seg.arrivalTime} <span class="text-xs font-semibold text-[#855D29]">${seg.arrivalDayOffset || ''}</span>
+              </div>
+              <div class="text-xs text-slate-400">${seg.toCode}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Passenger summary count
+      const paxCountText = `${b.passengers.length} Passenger${b.passengers.length > 1 ? 's' : ''}`;
+
+      return `
+        <div class="bg-white rounded-2xl border ${isCancelled ? 'border-red-200/80 bg-red-50/20' : 'border-slate-200'} shadow-sm overflow-hidden transition-all duration-200">
+          
+          <!-- CARD HEADER BAR -->
+          <div class="bg-slate-50/80 px-6 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              ${badgeHtml}
+              <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+              <div class="text-xs text-slate-500">
+                Booking Reference: <span class="font-extrabold text-[#0B192C] tracking-wider text-sm ml-1">${b.id}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 text-xs text-slate-500">
+              <span class="font-semibold uppercase tracking-wider text-slate-700 bg-white px-2.5 py-1 rounded-md border border-slate-200">${b.tripType}</span>
+              <span class="hidden sm:inline">•</span>
+              <span class="hidden sm:inline">Booked on ${b.bookingDate}</span>
+            </div>
+          </div>
+
+          <!-- CARD BODY -->
+          <div class="p-6">
+            ${segmentsHtml}
+
+            <!-- Card Bottom Strip: Passenger Count, Cabin, Total & Action Buttons -->
+            <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-600">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-lg text-slate-400">group</span>
+                  <span class="font-medium text-[#0B192C]">${paxCountText}</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-lg text-slate-400">airline_seat_recline_extra</span>
+                  <span class="font-medium text-[#0B192C]">${b.fareClass}</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs text-slate-400">Total Paid:</span>
+                  <span class="text-base font-extrabold text-[#0B192C] tabular-nums">$${b.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2 })} ${b.currency}</span>
+                </div>
+              </div>
+
+              <!-- Action Controls -->
+              <div class="flex items-center gap-3 self-end sm:self-auto">
+                ${!isCancelled && !isPast ? `
+                  <button 
+                    onclick="openCancelModal('${b.id}')"
+                    class="px-4 py-2 rounded-lg text-sm font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 border border-transparent hover:border-red-200 transition"
+                  >
+                    Cancel Booking
+                  </button>
+                ` : ''}
+
+                <button 
+                  onclick="toggleDetails('${b.id}')"
+                  class="px-5 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${isExpanded ? 'bg-slate-200 text-[#0B192C]' : 'bg-[#0B192C] text-white hover:bg-[#11223A] shadow-sm'}"
+                >
+                  <span>${isExpanded ? 'Hide Details' : 'View Details'}</span>
+                  <span class="material-symbols-outlined text-base transform transition-transform ${isExpanded ? 'rotate-180' : ''}">expand_more</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- EXPANDABLE INLINE BOOKING DETAILS PANEL -->
+          ${isExpanded ? createDetailsPanelHTML(b) : ''}
+
+        </div>
+      `;
+    }
+
+    function createDetailsPanelHTML(b) {
+      const isCancelled = b.status === 'CANCELLED';
+
+      return `
+        <div id="panel-details-${b.id}" class="border-t-2 border-[#C5A880]/40 bg-[#FBF7F0]/30 p-6 sm:p-8 animate-fadeIn">
+          
+          <div class="max-w-5xl mx-auto space-y-8">
+            
+            <!-- SECTION 1: HEADER & STATUS -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+              <div>
+                <div class="text-xs font-bold uppercase tracking-widest text-[#855D29]">Comprehensive Manifest</div>
+                <h3 class="text-2xl font-extrabold text-[#0B192C] mt-0.5 tracking-tight">Booking Details</h3>
+                <div class="mt-1 flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                  <span>Reference: <strong class="text-[#0B192C] font-bold text-sm ml-1">${b.id}</strong></span>
+                  <span>•</span>
+                  <span>Status: <strong class="${isCancelled ? 'text-red-600' : 'text-emerald-700'} font-bold">${b.status}</strong></span>
+                  <span>•</span>
+                  <span>Booking Date: <strong class="text-[#0B192C] font-semibold">${b.bookingDate}</strong></span>
+                </div>
+              </div>
+
+              <!-- Download Quick Actions -->
+              <div class="flex items-center gap-3">
+                <button onclick="downloadDocument('E-Ticket', '${b.id}')" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-slate-200 text-xs font-bold text-[#0B192C] hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
+                  <span class="material-symbols-outlined text-base text-[#855D29]">receipt_long</span>
+                  <span>Download E-Ticket</span>
+                </button>
+                <button onclick="downloadDocument('Receipt', '${b.id}')" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-slate-200 text-xs font-bold text-[#0B192C] hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
+                  <span class="material-symbols-outlined text-base text-[#855D29]">download</span>
+                  <span>Download Receipt</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- SECTION 2: FLIGHT DETAILS EXPANDED -->
+            <div>
+              <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-base text-[#855D29]">flight</span>
+                <span>Flight Itinerary Details</span>
+              </h4>
+
+              <div class="space-y-4">
+                ${b.segments.map(seg => `
+                  <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 gap-2">
+                      <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-[#0B192C] text-white">${seg.type}</span>
+                        <span class="text-sm font-bold text-[#0B192C]">${seg.fromCity} (${seg.fromCode}) → ${seg.toCity} (${seg.toCode})</span>
+                      </div>
+                      <div class="text-xs text-slate-500 font-medium">
+                        Flight <strong class="text-[#0B192C]">${seg.flightNumber}</strong> • ${seg.cabin} Class
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 items-center">
+                      <!-- Departure -->
+                      <div>
+                        <div class="text-2xl font-black text-[#0B192C] tabular-nums">${seg.departureTime}</div>
+                        <div class="text-sm font-bold text-slate-800 mt-0.5">${seg.fromCity} (${seg.fromCode})</div>
+                        <div class="text-xs text-slate-500">${seg.fromAirport}</div>
+                        ${seg.fromTerminal ? `<div class="text-[11px] font-semibold text-[#855D29] mt-0.5">${seg.fromTerminal}</div>` : ''}
+                        <div class="text-xs text-slate-400 mt-1">${seg.date}</div>
+                      </div>
+
+                      <!-- Middle: Flight Specs -->
+                      <div class="text-center flex flex-col items-center">
+                        <div class="text-xs font-semibold text-slate-500">${seg.duration}</div>
+                        <div class="w-full max-w-[180px] flex items-center my-1.5">
+                          <div class="w-2 h-2 rounded-full bg-[#C5A880]"></div>
+                          <div class="flex-1 h-[2px] bg-slate-200"></div>
+                          <span class="material-symbols-outlined text-sm text-[#0B192C]">flight</span>
+                          <div class="flex-1 h-[2px] bg-slate-200"></div>
+                          <div class="w-2 h-2 rounded-full bg-[#C5A880]"></div>
+                        </div>
+                        <div class="text-xs font-bold text-emerald-700">Non-stop Direct</div>
+                        <div class="text-[11px] text-slate-400 mt-1">${seg.aircraft}</div>
+                      </div>
+
+                      <!-- Arrival -->
+                      <div class="text-left md:text-right">
+                        <div class="text-2xl font-black text-[#0B192C] tabular-nums">
+                          ${seg.arrivalTime} ${seg.arrivalDayOffset ? `<span class="text-xs font-bold text-[#855D29]">${seg.arrivalDayOffset}</span>` : ''}
+                        </div>
+                        <div class="text-sm font-bold text-slate-800 mt-0.5">${seg.toCity} (${seg.toCode})</div>
+                        <div class="text-xs text-slate-500">${seg.toAirport}</div>
+                        ${seg.toTerminal ? `<div class="text-[11px] font-semibold text-[#855D29] mt-0.5">${seg.toTerminal}</div>` : ''}
+                        <div class="text-xs text-slate-400 mt-1">${seg.date}</div>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- SECTION 3: PASSENGERS & SEATS (DYNAMIC LIST) -->
+            <div>
+              <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-base text-[#855D29]">group</span>
+                <span>Passengers & Seat Allocation</span>
+              </h4>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                ${b.passengers.map((pax, pIdx) => `
+                  <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                          Passenger ${pIdx + 1} • ${pax.type}
+                        </span>
+                        <span class="text-xs text-slate-400">${pax.document}</span>
+                      </div>
+                      <div class="text-base font-bold text-[#0B192C]">${pax.name}</div>
+                      <div class="text-xs text-slate-500 mt-0.5">Nationality: ${pax.nationality}</div>
+                    </div>
+
+                    <!-- Seat Assignments Breakdown -->
+                    <div class="mt-4 pt-3 border-t border-slate-100">
+                      <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Allocated Cabin Berths:</div>
+                      <div class="space-y-1.5">
+                        ${Object.entries(pax.seats).map(([flightNum, seatCode]) => `
+                          <div class="flex items-center justify-between text-xs bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <span class="text-slate-600 font-medium">Flight <strong>${flightNum}</strong></span>
+                            <span class="font-extrabold text-[#0B192C] bg-white px-2 py-0.5 rounded border border-slate-200 shadow-2xs">
+                              Seat ${seatCode}
+                            </span>
+                          </div>
+                        `).join('')}
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- SECTION 4: PRICE DETAILS & SUMMARY -->
+            <div>
+              <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-base text-[#855D29]">credit_card</span>
+                <span>Price Details & Settlement Breakdown</span>
+              </h4>
+
+              <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm max-w-lg">
+                <div class="space-y-3 text-sm">
+                  <div class="flex justify-between text-slate-600">
+                    <span>Base Fare (${b.passengers.length} Passenger${b.passengers.length > 1 ? 's' : ''})</span>
+                    <span class="font-semibold text-slate-800 tabular-nums">$${b.priceBreakdown.baseFare.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  </div>
+                  <div class="flex justify-between text-slate-600">
+                    <span>Taxes & Carrier Fees</span>
+                    <span class="font-semibold text-slate-800 tabular-nums">$${b.priceBreakdown.taxesFees.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  </div>
+                  <div class="flex justify-between text-slate-600">
+                    <span>Seat Selection</span>
+                    <span class="font-bold text-emerald-700">${b.priceBreakdown.seatSelection}</span>
+                  </div>
+                  <div class="pt-3 border-t border-slate-200 flex justify-between items-baseline">
+                    <div class="font-extrabold text-[#0B192C] text-base">Total Paid</div>
+                    <div class="text-xl font-black text-[#0B192C] tabular-nums">$${b.totalPaid.toLocaleString('en-US', { minimumFractionDigits: 2 })} <span class="text-xs font-bold text-slate-500">${b.currency}</span></div>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-400">
+                  <span class="material-symbols-outlined text-sm text-emerald-600">lock</span>
+                  <span>Payment settled via 256-bit encrypted gateway • Instant PNR generated</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
