@@ -1,5 +1,6 @@
-<link rel="stylesheet" href="skybook-global.css">
-<script defer src="skybook-global.js"></script>
+<link rel="stylesheet" href="assets/css/skybook-global.css">
+<link rel="stylesheet" href="assets/css/site-mobile.css">
+<script defer src="assets/js/skybook-global.js"></script>
 <!DOCTYPE html>
 
 <html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -38,10 +39,16 @@
 </div>
 <!-- Quick Action CTA -->
 <div class="z-10 self-stretch md:self-center flex items-center justify-end">
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
 <button class="w-full md:w-auto px-space-lg py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-body-md text-body-md font-semibold transition-all duration-200 flex items-center justify-center gap-space-xs" id="hero-edit-btn" onclick="togglePersonalEdit(true)">
 <span class="material-symbols-outlined text-[18px]">edit</span>
           Edit Profile
         </button>
+<button type="button" onclick="handleProfileSignOut()" class="w-full md:w-auto px-space-lg py-2.5 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 font-body-md text-body-md font-semibold transition-all duration-200 flex items-center justify-center gap-space-xs" id="hero-signout-btn">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+          Sign Out
+        </button>
+</div>
 </div>
 </div>
 <!-- QUICK TRAVEL & LOYALTY STATS STRIP -->
@@ -572,4 +579,47 @@
       }, 200);
     }
   }
-</script></main><footer class="w-full bg-primary-container text-on-primary-container"><div class="max-w-7xl mx-auto px-gutter pt-space-xl pb-space-lg"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl"><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Company</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">About</li><li class="cursor-pointer hover:text-on-primary transition-colors">Careers</li><li class="cursor-pointer hover:text-on-primary transition-colors">Sustainability</li><li class="cursor-pointer hover:text-on-primary transition-colors">Press Releases</li></ul></div><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Global Network</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">Flagship Hubs</li><li class="cursor-pointer hover:text-on-primary transition-colors">Direct Transatlantic</li><li class="cursor-pointer hover:text-on-primary transition-colors">Private Charter Concierge</li></ul></div><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Passenger Services</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">SkyLounge Access</li><li class="cursor-pointer hover:text-on-primary transition-colors">Bespoke Dining</li><li class="cursor-pointer hover:text-on-primary transition-colors">Starlink Connectivity</li><li class="cursor-pointer hover:text-on-primary transition-colors">Baggage Guide</li></ul></div><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Legal &amp; Accreditation</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">IATA Accredited Flag Carrier</li><li class="cursor-pointer hover:text-on-primary transition-colors">Conditions of Carriage</li><li class="cursor-pointer hover:text-on-primary transition-colors">Privacy Notice</li><li class="cursor-pointer hover:text-on-primary transition-colors">Security</li></ul></div></div><div class="mt-space-xl pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-tertiary-container"><p>© 2026 SkyBook Airways Aura Luxury International. All rights reserved. SkyTrax 5-Star Certified.</p><div class="flex items-center gap-space-md"><span class="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed-dim">Ultra-Premium Aviation</span></div></div></div></footer></body></html>
+</script></main><footer class="w-full bg-primary-container text-on-primary-container"><div class="max-w-7xl mx-auto px-gutter pt-space-xl pb-space-lg"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl"><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Company</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">About</li><li class="cursor-pointer hover:text-on-primary transition-colors">Careers</li><li class="cursor-pointer hover:text-on-primary transition-colors">Sustainability</li><li class="cursor-pointer hover:text-on-primary transition-colors">Press Releases</li></ul></div><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Global Network</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">Flagship Hubs</li><li class="cursor-pointer hover:text-on-primary transition-colors">Direct Transatlantic</li><li class="cursor-pointer hover:text-on-primary transition-colors">Private Charter Concierge</li></ul></div><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Passenger Services</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">SkyLounge Access</li><li class="cursor-pointer hover:text-on-primary transition-colors">Bespoke Dining</li><li class="cursor-pointer hover:text-on-primary transition-colors">Starlink Connectivity</li><li class="cursor-pointer hover:text-on-primary transition-colors">Baggage Guide</li></ul></div><div class="flex flex-col gap-space-md"><h3 class="font-label-caps text-label-caps uppercase tracking-wider text-secondary-container">Legal &amp; Accreditation</h3><ul class="flex flex-col gap-space-sm font-body-sm text-body-sm"><li class="cursor-pointer hover:text-on-primary transition-colors">IATA Accredited Flag Carrier</li><li class="cursor-pointer hover:text-on-primary transition-colors">Conditions of Carriage</li><li class="cursor-pointer hover:text-on-primary transition-colors">Privacy Notice</li><li class="cursor-pointer hover:text-on-primary transition-colors">Security</li></ul></div></div><div class="mt-space-xl pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-tertiary-container"><p>© 2026 SkyBook Airways Aura Luxury International. All rights reserved. SkyTrax 5-Star Certified.</p><div class="flex items-center gap-space-md"><span class="font-label-caps text-label-caps uppercase tracking-widest text-secondary-fixed-dim">Ultra-Premium Aviation</span></div></div></div></footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('hero-signout-btn');
+  if (btn) btn.addEventListener('click', function(e){ e.preventDefault(); window.handleProfileSignOut(); });
+  const name = localStorage.getItem('skybook-user-name');
+  const initials = localStorage.getItem('skybook-user-initials');
+  const email = localStorage.getItem('skybook-user-email');
+  if (name) {
+    document.querySelectorAll('h1.font-headline-md, #display-name').forEach(el => { el.textContent = name; });
+    const input = document.getElementById('input-name');
+    if (input) input.value = name;
+  }
+  if (initials) {
+    const av = document.querySelector('.w-10.h-10.rounded-full, .rounded-full.bg-primary');
+    // update common avatar text nodes that are just initials
+    document.querySelectorAll('div').forEach(el => {
+      if (el.children.length === 0 && (el.textContent || '').trim() === 'JM') el.textContent = initials;
+    });
+  }
+  if (email) {
+    const em = document.getElementById('display-email') || document.getElementById('input-email');
+    if (em) {
+      if (em.tagName === 'INPUT') em.value = email;
+      else em.textContent = email;
+    }
+  }
+});
+</script>
+
+<script>
+window.handleProfileSignOut = function () {
+  try {
+    localStorage.removeItem('skybook-authenticated');
+    localStorage.removeItem('skybook-role');
+    localStorage.removeItem('skybook-user-name');
+    localStorage.removeItem('skybook-user-email');
+    localStorage.removeItem('skybook-user-initials');
+  } catch (e) {}
+  window.location.href = 'account.html?mode=login';
+};
+</script>
+
+</body></html>

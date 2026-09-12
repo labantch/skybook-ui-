@@ -1,5 +1,6 @@
-<link rel="stylesheet" href="skybook-global.css">
-<script defer src="skybook-global.js"></script>
+<link rel="stylesheet" href="assets/css/skybook-global.css">
+<link rel="stylesheet" href="assets/css/site-mobile.css">
+<script defer src="assets/js/skybook-global.js"></script>
 <!DOCTYPE html><html lang="en" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -190,7 +191,7 @@
 <span class="text-[9px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded font-mono" id="card-flightnum-1">SB 918</span>
 </div>
 <div class="text-xs font-bold text-[#0B192C] tracking-tight leading-tight mt-1 truncate" id="card-model-1">Boeing 777-300ER</div>
-<div class="text-[10px] text-slate-500 font-medium leading-none mt-0.5" id="card-specs-1">312 seats • 3-4-3 layout</div>
+<div class="text-[10px] text-slate-500 font-medium leading-none mt-0.5" id="card-specs-1">74 seats • 3-3-3 layout</div>
 </div>
 </div>
 </div>
@@ -217,7 +218,7 @@
 <span class="text-[9px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded font-mono" id="card-flightnum-2">SB 929</span>
 </div>
 <div class="text-xs font-bold text-[#0B192C] tracking-tight leading-tight mt-1 truncate" id="card-model-2">Boeing 787-9 Dreamliner</div>
-<div class="text-[10px] text-slate-500 font-medium leading-none mt-0.5" id="card-specs-2">236 seats • 3-3-3 layout</div>
+<div class="text-[10px] text-slate-500 font-medium leading-none mt-0.5" id="card-specs-2">83 seats • 3-3-3 layout</div>
 </div>
 </div>
 </div>
@@ -244,7 +245,7 @@
 <span class="text-[9px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded font-mono" id="card-flightnum-3">SB 101</span>
 </div>
 <div class="text-xs font-bold text-[#0B192C] tracking-tight leading-tight mt-1 truncate" id="card-model-3">Airbus A350-1000</div>
-<div class="text-[10px] text-slate-500 font-medium leading-none mt-0.5" id="card-specs-3">279 seats • 3-3-3 layout</div>
+<div class="text-[10px] text-slate-500 font-medium leading-none mt-0.5" id="card-specs-3">110 seats • 3-3-3 layout</div>
 </div>
 </div>
 </div>
@@ -446,7 +447,7 @@
 <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>
 </button>
-<a class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5" href="Flights process 1.html">
+<a class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5" href="flights.html">
               Back to Flights
             </a>
 </div>
@@ -474,7 +475,7 @@
 <button class="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-[#0B192C]" onclick="closeSeatConfirmation()" type="button" aria-label="Close confirmation"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
 </div>
 <div class="px-6 py-5"><p class="text-sm leading-relaxed text-slate-600">Your seats are selected for every flight segment. Review the assignments below before continuing.</p><div class="mt-4 space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700" id="seat-confirmation-summary"></div></div>
-<div class="flex flex-col-reverse gap-2 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end"><button class="rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100" onclick="closeSeatConfirmation()" type="button">Review Seats</button><button class="rounded-xl bg-[#0B192C] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#162840]" onclick="window.location.href='Passenger Deitales process 3.html'" type="button">Continue to Passenger Details <span aria-hidden="true">→</span></button></div>
+<div class="flex flex-col-reverse gap-2 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end"><button class="rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100" onclick="closeSeatConfirmation()" type="button">Review Seats</button><button class="rounded-xl bg-[#0B192C] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#162840]" onclick="window.location.href='passenger-details.html'" type="button">Continue to Passenger Details <span aria-hidden="true">→</span></button></div>
 </div>
 </div>
 <!-- 6. FOOTER: Luxury SkyBook Standard Footer -->
@@ -499,112 +500,123 @@
 </footer>
 <!-- Dynamic Seating Engine JavaScript -->
 <script>
+    // ============================================================
+    // AUTO SEAT-MAP GENERATOR
+    // Mirrors the "Add Aircraft" form in the ops console: you hand it
+    // three numbers — seats in First, Business, and Economy — and it
+    // lays out rows, aisles, and seat letters on its own. Nobody has
+    // to hand-author a seat button ever again.
+    //
+    // How it works:
+    //  1. CABIN_LAYOUTS defines the *shape* of one row per cabin type
+    //     (e.g. Economy is 3-3-3: three seats, aisle, three seats,
+    //     aisle, three seats). This is the only place layout patterns
+    //     live — change it once and every aircraft using that cabin
+    //     type updates.
+    //  2. buildCabin() takes a seat COUNT and divides it by the row's
+    //     seat capacity to work out how many rows are needed, then
+    //     numbers those rows starting at `startRow`. Seat counts are
+    //     rounded up to the nearest full row, same as a real aircraft.
+    //  3. buildAircraft() chains First → Business → Economy, leaving
+    //     a 1-row gap between cabins for the galley/divider, and
+    //     returns the exact same `{ cabins: [...] }` shape the
+    //     existing renderSeatMap()/updateAllViews() code already
+    //     knows how to draw — so nothing else in this file changes.
+    //
+    // To add a new aircraft: call buildAircraft() with a model name
+    // and a { first, business, economy } seat count. That's it.
+    // ============================================================
+    const CABIN_LAYOUTS = {
+      first:    { name: 'FIRST CLASS',    badge: '1-2-1 SOVEREIGN SUITES',     groups: [['A'], ['D', 'G'], ['K']] },
+      business: { name: 'BUSINESS CLASS', badge: '1-2-1 DIRECT AISLE ACCESS', groups: [['A'], ['D', 'G'], ['K']] },
+      economy:  { name: 'ECONOMY CLASS',  badge: '3-3-3 MODERN LAYOUT',       groups: [['A', 'B', 'C'], ['D', 'E', 'F'], ['H', 'J', 'K']] }
+    };
+    const CABIN_ROW_GAP = 1; // blank rows left between cabins for a galley/divider
+
+    function buildCabin(typeKey, seatCount, startRow, reservedSeats = []) {
+      const layout = CABIN_LAYOUTS[typeKey];
+      const seatsPerRow = layout.groups.reduce((sum, g) => sum + g.length, 0);
+      const rowCount = Math.max(1, Math.ceil(seatCount / seatsPerRow));
+      const rows = Array.from({ length: rowCount }, (_, i) => startRow + i);
+
+      // Sprinkle in some already-occupied seats so the map doesn't look
+      // empty on first load — but never touch a seat a demo passenger
+      // already holds (passed in via reservedSeats).
+      const occupied = [];
+      let seatIndex = 0;
+      rows.forEach(rowNum => {
+        layout.groups.flat().forEach(letter => {
+          const seatId = `${rowNum}${letter}`;
+          seatIndex++;
+          if (seatIndex % 6 === 0 && !reservedSeats.includes(seatId)) occupied.push(seatId);
+        });
+      });
+
+      return {
+        typeKey,
+        name: layout.name,
+        badge: layout.badge,
+        groups: layout.groups,
+        rows,
+        occupied,
+        extraLegroomRows: typeKey === 'economy' ? [rows[0]] : undefined,
+        seatsPerRow
+      };
+    }
+
+    function buildAircraft({ model, category, flightNum, seats, reservedSeats = [] }) {
+      // `seats` is exactly what the ops-console "Add Aircraft" modal
+      // collects: { first, business, economy }. Nothing else needed.
+      const cabinOrder = ['first', 'business', 'economy'];
+      const cabins = [];
+      let nextRow = 1;
+
+      cabinOrder.forEach(typeKey => {
+        const count = seats[typeKey] || 0;
+        if (count <= 0) return;
+        const cabin = buildCabin(typeKey, count, nextRow, reservedSeats);
+        cabins.push(cabin);
+        nextRow = cabin.rows[cabin.rows.length - 1] + 1 + CABIN_ROW_GAP;
+      });
+
+      // Total reflects what actually got drawn (rounded to full rows),
+      // so the number shown to the customer always matches the map.
+      const totalSeats = cabins.reduce((sum, c) => sum + c.rows.length * c.seatsPerRow, 0);
+      const layoutTags = cabins.map(c => c.groups.map(g => g.length).join('-'));
+
+      return {
+        model,
+        category,
+        flightNum,
+        totalSeats,
+        configLabel: `3 CABIN ARCHITECTURE • ${layoutTags.join(' / ')}`,
+        shortSpecs: `${totalSeats} seats • ${layoutTags[layoutTags.length - 1]} layout`,
+        cabins
+      };
+    }
+
     const aircraftConfigs = {
-      'B777-300ER': {
+      // Just the three seat counts drive the entire map below.
+      'B777-300ER': buildAircraft({
         model: 'Boeing 777-300ER',
         category: 'Flagship Wide-body',
-        totalSeats: 312,
-        configLabel: '3 CABIN ARCHITECTURE • 1-2-1 / 1-2-1 / 3-4-3',
-        shortSpecs: '312 seats • 3-4-3 layout',
         flightNum: 'SB 918',
-        cabins: [
-          {
-            typeKey: 'first',
-            name: 'FIRST CLASS',
-            badge: '1-2-1 SOVEREIGN SUITES',
-            groups: [['A'], ['D', 'G'], ['K']],
-            rows: [1, 2],
-            occupied: ['1A', '2K']
-          },
-          {
-            typeKey: 'business',
-            name: 'BUSINESS CLASS',
-            badge: '1-2-1 DIRECT AISLE ACCESS',
-            groups: [['A'], ['D', 'G'], ['K']],
-            rows: [4, 5, 6],
-            occupied: ['4D', '5G', '6A']
-          },
-          {
-            typeKey: 'economy',
-            name: 'ECONOMY CLASS',
-            badge: '3-4-3 WIDE-BODY LAYOUT',
-            groups: [['A', 'B', 'C'], ['D', 'E', 'F', 'G'], ['H', 'J', 'K']],
-            rows: [12, 13, 14, 15, 16],
-            occupied: ['12E', '12J', '13G', '14D', '14E', '14K', '15H', '16D', '16E'],
-            extraLegroomRows: [12]
-          }
-        ]
-      },
-      'B787-9': {
+        seats: { first: 8, business: 12, economy: 54 },
+        reservedSeats: ['10A', '10B']
+      }),
+      'B787-9': buildAircraft({
         model: 'Boeing 787-9 Dreamliner',
         category: 'Mid-sized Wide-body Carbon Composite',
-        totalSeats: 236,
-        configLabel: '3 CABIN ARCHITECTURE • 1-2-1 / 1-2-1 / 3-3-3',
-        shortSpecs: '236 seats • 3-3-3 layout',
         flightNum: 'SB 929',
-        cabins: [
-          {
-            typeKey: 'first',
-            name: 'FIRST CLASS',
-            badge: '1-2-1 SOVEREIGN SUITES',
-            groups: [['A'], ['D', 'G'], ['L']],
-            rows: [1, 2],
-            occupied: ['1D', '2A']
-          },
-          {
-            typeKey: 'business',
-            name: 'BUSINESS CLASS',
-            badge: '1-2-1 DIRECT AISLE ACCESS',
-            groups: [['A'], ['D', 'G'], ['L']],
-            rows: [4, 5, 6],
-            occupied: ['4L', '5D', '6G']
-          },
-          {
-            typeKey: 'economy',
-            name: 'ECONOMY CLASS',
-            badge: '3-3-3 MODERN LAYOUT',
-            groups: [['A', 'B', 'C'], ['D', 'E', 'F'], ['J', 'K', 'L']],
-            rows: [10, 11, 12, 13, 14, 15, 16],
-            occupied: ['10C', '10F', '11A', '11E', '12K', '13D', '14B', '14J', '15F'],
-            extraLegroomRows: [10]
-          }
-        ]
-      },
-      'A350-1000': {
+        seats: { first: 8, business: 12, economy: 63 },
+        reservedSeats: ['9F', '8H']
+      }),
+      'A350-1000': buildAircraft({
         model: 'Airbus A350-1000',
         category: 'Next-Gen Ultra Long-Haul Wide-Body',
-        totalSeats: 279,
-        configLabel: '3 CABIN ARCHITECTURE • 1-2-1 / 1-2-1 / 3-3-3',
-        shortSpecs: '279 seats • 3-3-3 layout',
         flightNum: 'SB 101',
-        cabins: [
-          {
-            typeKey: 'first',
-            name: 'FIRST CLASS',
-            badge: '1-2-1 SOVEREIGN SUITES',
-            groups: [['A'], ['D', 'G'], ['K']],
-            rows: [1, 2],
-            occupied: ['1K', '2D']
-          },
-          {
-            typeKey: 'business',
-            name: 'BUSINESS CLASS',
-            badge: '1-2-1 DIRECT AISLE ACCESS',
-            groups: [['A'], ['D', 'G'], ['K']],
-            rows: [4, 5, 6],
-            occupied: ['4A', '5K', '6D']
-          },
-          {
-            typeKey: 'economy',
-            name: 'ECONOMY CLASS',
-            badge: '3-3-3 MODERN LAYOUT',
-            groups: [['A', 'B', 'C'], ['D', 'E', 'F'], ['H', 'J', 'K']],
-            rows: [10, 11, 12, 13, 14, 15, 16],
-            occupied: ['10B', '10F', '11C', '11H', '12D', '13A', '14F', '15K'],
-            extraLegroomRows: [10]
-          }
-        ]
-      }
+        seats: { first: 8, business: 12, economy: 90 }
+      })
     };
 
     const bookingState = {
@@ -622,8 +634,8 @@
           duration: '3h 35m',
           date: 'Friday, 11 Sep 2026',
           passengers: {
-            1: { name: 'Passenger 1 (Adult)', seat: '14A', type: 'Standard Seat', pos: 'Window • Row 14' },
-            2: { name: 'Passenger 2 (Adult)', seat: '14B', type: 'Standard Seat', pos: 'Middle • Row 14' }
+            1: { name: 'Passenger 1 (Adult)', seat: '10A', type: 'Standard Seat', pos: 'Window • Row 10' },
+            2: { name: 'Passenger 2 (Adult)', seat: '10B', type: 'Standard Seat', pos: 'Middle • Row 10' }
           }
         },
         2: {
@@ -637,8 +649,8 @@
           duration: '7h 45m',
           date: 'Friday, 18 Sep 2026',
           passengers: {
-            1: { name: 'Passenger 1 (Adult)', seat: '11F', type: 'Standard Seat', pos: 'Aisle • Row 11' },
-            2: { name: 'Passenger 2 (Adult)', seat: '10L', type: 'Extra Legroom', pos: 'Window • Row 10' }
+            1: { name: 'Passenger 1 (Adult)', seat: '9F', type: 'Standard Seat', pos: 'Aisle • Row 9' },
+            2: { name: 'Passenger 2 (Adult)', seat: '8H', type: 'Extra Legroom', pos: 'Window • Row 8' }
           }
         },
         3: {
