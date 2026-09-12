@@ -1535,6 +1535,16 @@
       }
       renderSidebar();
       renderFlightCards();
+      // On mobile the primary Next button sits in the trip summary above the
+      // results. Bring it back into view after a fare is chosen.
+      if (seg.selectedFlight && window.matchMedia('(max-width: 1023px)').matches) {
+        requestAnimationFrame(() => {
+          document.getElementById('sidebar-left-column')?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        });
+      }
     };
 
     window.handlePrimaryAction = function() {
